@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GreenRipple · 학생환경재단</title>
+
+  <!-- Google Font (인터넷 연결 시) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f7fbf9;
+      --card:#ffffff;
+      --accent-1: #2bb673; /* mint green */
+      --accent-2: #0b7d9c; /* teal */
+      --muted:#7a8a8f;
+      --glass: rgba(255,255,255,0.65);
+      --radius: 14px;
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #f7fbf9 0%, #eff7f4 100%);
+      color:#10303a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+
+    /* Header / nav */
+    header{
+      position:fixed;
+      left:0; right:0;
+      top:18px;
+      z-index:60;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .nav-wrap{
+      width:100%;
+      max-width:var(--max-width);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:8px 16px;
+      pointer-events:auto;
+      background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+      backdrop-filter: blur(6px) saturate(120%);
+      border-radius:999px;
+      box-shadow: 0 6px 20px rgba(12,30,34,0.08);
+      border: 1px solid rgba(16,48,58,0.06);
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none; color:inherit;
+    }
+    .logo{
+      width:44px; height:44px; flex:0 0 44px;
+      display:grid; place-items:center;
+      background: linear-gradient(135deg,var(--accent-1),var(--accent-2));
+      border-radius:10px;
+      box-shadow: 0 6px 18px rgba(11,125,156,0.14);
+      color:white; font-weight:700; font-size:16px;
+    }
+    .brand h1{font-size:16px;margin:0;line-height:1}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    nav{margin-left:auto; display:flex; gap:12px; align-items:center}
+    nav a{
+      font-size:14px; color:var(--muted); text-decoration:none;
+      padding:8px 12px; border-radius:10px;
+    }
+    nav a.active, nav a:hover{
+      color:var(--accent-2); background:rgba(11,125,156,0.06);
+    }
+
+    /* Page sections */
+    main{margin-top:90px}
+    section.full{
+      min-height:100vh;
+      display:grid;
+      align-items:center;
+      padding: clamp(28px, 6vw, 64px);
+    }
+    .container{
+      width:100%; max-width:var(--max-width); margin:0 auto;
+    }
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:36px;
+      align-items:center;
+    }
+    .hero .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow: 0 18px 50px rgba(12,30,34,0.08);
+      border:1px solid rgba(16,48,58,0.04);
+    }
+    .kicker{
+      display:inline-block; padding:6px 10px; border-radius:999px; font-size:13px;
+      background: rgba(43,182,115,0.12); color:var(--accent-2); font-weight:600;
+    }
+    h2{margin:12px 0 8px; font-size:30px}
+    p.lead{color:#23484b; margin:0 0 18px; font-size:16px}
+    .hero .cta{
+      display:flex; gap:10px; margin-top:8px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer;
+      background:var(--accent-2); color:white; padding:12px 16px; border-radius:12px;
+      font-weight:600; text-decoration:none;
+    }
+    .btn.alt{
+      background:transparent; color:var(--accent-2); border:1px solid rgba(11,125,156,0.12);
+    }
+
+    /* right column card */
+    .stat-card{ padding:18px; border-radius:12px; background:linear-gradient(180deg,#ffffff,#f7fff9); }
+    .stat-row{display:flex; gap:12px; align-items:center}
+    .stat{flex:1; padding:12px; border-radius:10px; background:var(--glass); text-align:center}
+    .stat h3{margin:0; font-size:18px}
+    .stat p{margin:6px 0 0; color:var(--muted); font-size:13px}
+
+    /* Sections layout */
+    .section-title{
+      display:flex; align-items:baseline; gap:14px; margin-bottom:18px;
+    }
+    .section-title h3{margin:0; font-size:20px}
+    .section-title p{margin:0; color:var(--muted); font-size:14px}
+
+    /* EcoMap (핵심활동) */
+    .map-wrap{
+      display:grid; grid-template-columns: 1fr 420px; gap:28px; align-items:start;
+    }
+    .map{
+      height:520px; border-radius:14px; padding:18px;
+      background: linear-gradient(180deg,#eafff5,#f7fff9);
+      border:1px solid rgba(11,125,156,0.06);
+      position:relative; overflow:hidden;
+      box-shadow: 0 12px 30px rgba(11,125,156,0.06);
+    }
+    /* SVG pseudo-map */
+    .svg-map{ width:100%; height:100%; display:block; background:
+      linear-gradient(135deg, rgba(43,182,115,0.06) 0%, rgba(11,125,156,0.03) 100%);
+      border-radius:10px; padding:10px; }
+    .marker{
+      transform:translate(-50%,-100%);
+      transition: transform .12s ease;
+    }
+    .marker:hover{ transform:translate(-50%,-120%) scale(1.08); }
+    .map-instructions{font-size:13px; color:var(--muted); margin-top:10px}
+
+    /* campaign (참여) */
+    .campaign-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+    .campaign-card{ background:var(--card); padding:16px; border-radius:12px; box-shadow: 0 8px 20px rgba(16,48,58,0.04) }
+    .campaign-card h4{margin:0 0 8px}
+    .campaign-card p{margin:0; color:var(--muted); font-size:14px}
+
+    /* blog / news */
+    .posts{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+    .post{ background:var(--card); border-radius:12px; padding:16px; box-shadow: 0 8px 20px rgba(16,48,58,0.04) }
+    .post time{font-size:12px; color:var(--muted)}
+    .post h4{margin:12px 0 8px}
+    .post p{margin:0; color:var(--muted)}
+
+    /* donate / contact */
+    .contact-grid{ display:grid; grid-template-columns: 1fr 420px; gap:24px; align-items:start;}
+    form{ background:var(--card); padding:18px; border-radius:12px; box-shadow: 0 10px 30px rgba(16,48,58,0.04)}
+    label{display:block; font-size:13px; margin-bottom:6px; color:#123437}
+    input[type="text"], input[type="email"], textarea, select{
+      width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(16,48,58,0.06);
+      font-size:14px; outline:none; background:transparent;
+    }
+    textarea{ min-height:120px; resize:vertical }
+    .row{display:flex; gap:12px}
+    .muted{color:var(--muted); font-size:13px}
+
+    /* footer */
+    footer{padding:36px 16px; text-align:center; color:var(--muted); font-size:13px}
+
+    /* small screens */
+    @media (max-width:980px){
+      .hero, .map-wrap, .contact-grid{ grid-template-columns:1fr; }
+      .hero .panel{ order:2 }
+      .brand p{display:none}
+      nav{display:none}
+      .campaign-grid{ grid-template-columns: 1fr 1fr }
+      .posts{ grid-template-columns:1fr }
+    }
+    @media (max-width:520px){
+      .campaign-grid{ grid-template-columns:1fr }
+      .stat-card{ display:none }
+      header{top:10px}
+      .brand h1{font-size:14px}
+      h2{font-size:24px}
+    }
+
+    /* reveal animation */
+    .reveal{opacity:0; transform: translateY(18px); transition: all 600ms cubic-bezier(.16,.84,.21,1)}
+    .reveal.visible{opacity:1; transform: translateY(0)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-wrap">
+      <a href="#home" class="brand" aria-label="GreenRipple 홈">
+        <div class="logo" aria-hidden="true">
+          <!-- 간단한 로고 이니셜 -->
+          GR
+        </div>
+        <div>
+          <h1>GreenRipple</h1>
+          <p>작은 실천이 지구를 흔든다</p>
+        </div>
+      </a>
+
+      <nav aria-label="주요 섹션">
+        <a href="#home" class="nav-link active">소개</a>
+        <a href="#activity" class="nav-link">핵심활동</a>
+        <a href="#campaign" class="nav-link">캠페인</a>
+        <a href="#news" class="nav-link">뉴스/스토리</a>
+        <a href="#support" class="nav-link">후원/문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO / 소개 -->
+    <section id="home" class="full">
+      <div class="container hero">
+        <div class="panel reveal">
+          <span class="kicker">학생이 만드는 환경 변화</span>
+          <h2>GreenRipple — 학생환경재단</h2>
+          <p class="lead">우리는 고등학생이 직접 관찰하고 기록하며 지역 생태를 지키는 시민과학 프로젝트를 운영합니다. 작은 실천이 모여 지역사회의 큰 파동이 됩니다.</p>
+
+          <div class="cta">
+            <a class="btn" href="#campaign">참여하기</a>
+            <a class="btn alt" href="#activity">핵심활동 보기</a>
+          </div>
+
+          <div style="margin-top:18px; display:flex; gap:12px; align-items:center;">
+            <div style="flex:1">
+              <div class="muted">최근 활동 요약</div>
+              <div style="display:flex; gap:12px; margin-top:8px;">
+                <div style="background:linear-gradient(180deg,#fff,#f4fff7); padding:10px; border-radius:10px; flex:1;">
+                  <strong>12</strong><div class="muted" style="font-size:13px">조사팀</div>
+                </div>
+                <div style="background:linear-gradient(180deg,#fff,#fff8ff); padding:10px; border-radius:10px; flex:1;">
+                  <strong>84</strong><div class="muted" style="font-size:13px">지점 업로드</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card" aria-hidden="true">
+              <div class="stat-row">
+                <div class="stat"><h3>지역</h3><p class="muted">통영 / 창원 등</p></div>
+                <div class="stat"><h3>연령</h3><p class="muted">고1 ~ 고3</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- right column: mission / logo -->
+        <aside class="stat-card reveal" style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div style="width:68px; height:68px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg,var(--accent-1),var(--accent-2)); color:white; font-size:18px;">GR</div>
+            <div>
+              <div class="muted">슬로건</div>
+              <strong>“작은 실천이 지구를 흔든다.”</strong>
+            </div>
+          </div>
+          <div>
+            <div class="muted">미션</div>
+            <p style="margin:8px 0 0">학생 스스로 환경을 관찰하고, 과학적으로 기록하여 지역사회의 환경정책과 대화할 수 있는 자료를 만든다.</p>
+          </div>
+          <div>
+            <div class="muted">핵심활동</div>
+            <p style="margin:8px 0 0">EcoMap 프로젝트 — 지역 생태 조사 & 웹지도 제작</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 핵심활동 -->
+    <section id="activity" class="full" aria-labelledby="activity-title">
+      <div class="container reveal">
+        <div class="section-title">
+          <h3 id="activity-title">핵심활동 · EcoMap 프로젝트</h3>
+          <p>학생들이 직접 조사하고 기록하는 지역 생태 지도</p>
+        </div>
+
+        <div class="map-wrap">
+          <div class="map" aria-label="EcoMap 미리보기">
+            <!-- 간단한 상호작용 가능한 SVG 맵 (마커 추가 가능) -->
+            <svg id="svgMap" class="svg-map" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" role="img" aria-describedby="map-desc">
+              <desc id="map-desc">간단한 상호작용 지도. 빈 공간을 클릭해 새 지점을 추가할 수 있음.</desc>
+
+              <!-- 배경: 초록 필드, 강 -->
+              <rect x="0" y="0" width="1000" height="700" fill="#e6fff3" rx="10"></rect>
+              <ellipse cx="760" cy="540" rx="230" ry="90" fill="#dffaf0" />
+              <!-- 강 -->
+              <path d="M0 220 C180 170, 360 270, 520 240 C680 210, 840 310, 1000 280 L1000 360 C840 390,680 310,520 340 C360 370,180 270,0 320 Z" fill="#e6f7fb" opacity="0.9"></path>
+
+              <!-- 나무 아이콘 (sample) -->
+              <g id="trees" transform="translate(120,420)">
+                <circle cx="28" cy="18" r="18" fill="#2bb673"></circle>
+                <rect x="24" y="18" width="8" height="16" fill="#7b5a39"></rect>
+                <circle cx="76" cy="8" r="14" fill="#2bb673"></circle>
+                <rect x="72" y="18" width="8" height="16" fill="#7b5a39"></rect>
+              </g>
+
+              <!-- 기존 샘플 마커 -->
+              <g class="marker-group">
+                <!-- sample marker 1 -->
+                <g class="marker" data-id="m-01" transform="translate(420,240)">
+                  <circle r="14" fill="#ff6b6b" opacity="0.95"></circle>
+                  <text x="22" y="6" font-size="12" fill="#10303a">쓰레기무단투기</text>
+                </g>
+                <!-- sample marker 2 -->
+                <g class="marker" data-id="m-02" transform="translate(220,520)">
+                  <circle r="12" fill="#0b7d9c" opacity="0.95"></circle>
+                  <text x="18" y="6" font-size="12" fill="#10303a">관찰:왕잠자리</text>
+                </g>
+              </g>
+
+              <!-- 마커 추가될 곳 -->
+              <g id="userMarkers"></g>
+
+            </svg>
+
+            <div class="map-instructions muted">지도 위를 클릭하면 직접 지점(임시 마커)을 추가할 수 있습니다. 각 마커는 캠페인 참여 폼에서 세부사항을 이어서 제출하세요.</div>
+          </div>
+
+          <aside style="display:flex; flex-direction:column; gap:12px;">
+            <div style="background:linear-gradient(180deg,#fff,#f7fff9); padding:16px; border-radius:12px;">
+              <h4>프로젝트 개요</h4>
+              <p class="muted">학생들이 직접 사진과 좌표, 관찰 메모를 수집합니다. 축적된 데이터는 공개 지도 형태로 제공되어 지역주민과 지자체의 의사결정에 도움이 됩니다.</p>
+            </div>
+
+            <div style="background:var(--card); padding:14px; border-radius:12px;">
+              <h4>참여 방법</h4>
+              <ol style="margin:8px 0 0; padding-left:18px; color:var(--muted)">
+                <li>맵에서 지점을 클릭 → 간단한 라벨 추가</li>
+                <li>캠페인 참여 폼에서 세부 정보 업로드</li>
+                <li>팀과 함께 정기 조사 및 보고서 발행</li>
+              </ol>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+              <a class="btn" href="#campaign">팀 가입</a>
+              <a class="btn alt" href="#news">최근 리포트</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 캠페인 참여 -->
+    <section id="campaign" class="full" aria-labelledby="campaign-title">
+      <div class="container reveal">
+        <div class="section-title">
+          <h3 id="campaign-title">캠페인 참여</h3>
+          <p>지금 바로 참여할 수 있는 단기 캠페인 목록</p>
+        </div>
+
+        <div class="campaign-grid">
+          <div class="campaign-card">
+            <h4>쓰레기 트래킹 캠페인</h4>
+            <p class="muted">학교 근처 쓰레기 투기 지점을 찾아 사진과 좌표를 기록하세요. 한 달 간의 변화 추적을 통해 개선 제안 자료를 만듭니다.</p>
+            <div style="margin-top:12px"><button class="btn" onclick="openSignup('쓰레기 트래킹 캠페인')">참여 신청</button></div>
+          </div>
+
+          <div class="campaign-card">
+            <h4>생물 관찰 주간</h4>
+            <p class="muted">한 주 동안 동일 지점에서 생물종 관찰을 진행해 생물다양성 지수를 추정합니다. 관찰 기록은 EcoMap에 업로드됩니다.</p>
+            <div style="margin-top:12px"><button class="btn alt" onclick="openSignup('생물 관찰 주간')">참여 신청</button></div>
+          </div>
+
+          <div class="campaign-card">
+            <h4>플로깅 데이</h4>
+            <p class="muted">조깅하며 쓰레기를 줍는 플로깅 행사. 수거량을 기록해 지역 쓰레기 핫스팟을 파악합니다.</p>
+            <div style="margin-top:12px"><button class="btn" onclick="openSignup('플로깅 데이')">참여 신청</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 뉴스 / 스토리 -->
+    <section id="news" class="full" aria-labelledby="news-title">
+      <div class="container reveal">
+        <div class="section-title">
+          <h3 id="news-title">뉴스 · 스토리</h3>
+          <p>학생들이 직접 쓴 리포트와 필드노트</p>
+        </div>
+
+        <div class="posts">
+          <article class="post">
+            <time datetime="2025-10-28">2025-10-28</time>
+            <h4>하천 정화 활동 보고서</h4>
+            <p class="muted">이번 달 하천 정화 활동에서 수거한 쓰레기 유형과 개수, 개선 제안 요약.</p>
+            <div style="margin-top:12px"><button class="btn alt" onclick="showStory(1)">더보기</button></div>
+          </article>
+
+          <article class="post">
+            <time datetime="2025-09-12">2025-09-12</time>
+            <h4>생물 관찰 주간 — 잠자리 조사</h4>
+            <p class="muted">왕잠자리 발견이 늘어난 지점과 그 환경적 특징 분석 리포트.</p>
+            <div style="margin-top:12px"><button class="btn alt" onclick="showStory(2)">더보기</button></div>
+          </article>
+
+          <article class="post">
+            <time datetime="2025-07-05">2025-07-05</time>
+            <h4>학생 제작: 지역 쓰레기 지도 공개</h4>
+            <p class="muted">EcoMap 초안 공개 — 지역 쓰레기 핫스팟 10곳 소개 및 사진 아카이브.</p>
+            <div style="margin-top:12px"><button class="btn alt" onclick="showStory(3)">더보기</button></div>
+          </article>
+
+          <article class="post">
+            <time datetime="2025-05-28">2025-05-28</time>
+            <h4>플로깅 데이 후기</h4>
+            <p class="muted">처음 참여한 학생들의 생생한 후기와 다음 행사 제안.</p>
+            <div style="margin-top:12px"><button class="btn alt" onclick="showStory(4)">더보기</button></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 후원 / 문의 -->
+    <section id="support" class="full" aria-labelledby="support-title">
+      <div class="container reveal">
+        <div class="section-title">
+          <h3 id="support-title">후원 · 문의</h3>
+          <p>후원, 협업 제안, 일반 문의를 환영합니다.</p>
+        </div>
+
+        <div class="contact-grid">
+          <form id="contactForm" onsubmit="submitContact(event)" novalidate>
+            <label for="name">이름</label>
+            <input id="name" name="name" type="text" placeholder="홍길동" required>
+
+            <label for="email">이메일</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+            <label for="type">문의 유형</label>
+            <select id="type" name="type" required>
+              <option value="">선택하세요</option>
+              <option>후원 제안</option>
+              <option>협업 요청</option>
+              <option>미디어 · 보도</option>
+              <option>기타</option>
+            </select>
+
+            <label for="message">내용</label>
+            <textarea id="message" name="message" placeholder="내용을 입력하세요..." required></textarea>
+
+            <div style="display:flex; gap:12px; margin-top:12px">
+              <button class="btn" type="submit">전송</button>
+              <button type="button" class="btn alt" onclick="saveDraft()">임시저장</button>
+            </div>
+
+            <p id="contactNotice" class="muted" style="margin-top:12px">* 요청은 재단 담당 학생들이 검토 후 답변드립니다.</p>
+          </form>
+
+          <aside style="display:flex; flex-direction:column; gap:12px;">
+            <div style="background:linear-gradient(180deg,#fff,#f7fff9); padding:16px; border-radius:12px;">
+              <h4>후원 방법</h4>
+              <p class="muted">소액 정기후원, 장비 기증, 행사 협찬 등 다양한 방식으로 참여할 수 있습니다. 자세한 제안은 문의 폼으로 남겨주세요.</p>
+            </div>
+
+            <div style="background:var(--card); padding:16px; border-radius:12px;">
+              <h4>연락처</h4>
+              <p class="muted">이메일: contact@greenripple.org<br>SNS: @greenripple_official</p>
+            </div>
+
+            <div style="background:var(--card); padding:12px; border-radius:10px;">
+              <h4>투명성</h4>
+              <p class="muted">모든 후원금은 활동보고서에 투명하게 공개됩니다.</p>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <strong>GreenRipple</strong> · 학생환경재단 · 만든이: 지역 고등학생 팀 · 디자인 & 개발 (샘플)
+    </footer>
+  </main>
+
+  <script>
+    /*******************************
+     * 유틸: 스무스 스크롤 & 네비 활성화
+     *******************************/
+    document.querySelectorAll('.nav-link').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));
+        a.classList.add('active');
+        const id = a.getAttribute('href');
+        document.querySelector(id).scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+
+    // 스크롤 리빌 (간단)
+    const reveals = document.querySelectorAll('.reveal');
+    const onScroll = ()=>{
+      const windowBottom = window.scrollY + window.innerHeight;
+      reveals.forEach(el=>{
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        if(windowBottom > top + 80) el.classList.add('visible');
+      });
+    };
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('load', onScroll);
+
+    /*******************************
+     * EcoMap — SVG 맵에 마커 추가 (클릭)
+     *  - 클릭하면 임시 마커가 생기고, 참여 폼을 열어 라벨 입력 가능
+     *******************************/
+    const svgMap = document.getElementById('svgMap');
+    const userMarkers = document.getElementById('userMarkers');
+
+    let markerCounter = 0;
+    svgMap.addEventListener('click', (evt)=>{
+      // SVG 좌표 변환
+      const pt = svgMap.createSVGPoint();
+      pt.x = evt.clientX; pt.y = evt.clientY;
+      const svgP = pt.matrixTransform(svgMap.getScreenCTM().inverse());
+      addTempMarker(Math.round(svgP.x), Math.round(svgP.y));
+    });
+
+    function addTempMarker(x,y){
+      markerCounter += 1;
+      const id = 'u-' + String(markerCounter).padStart(2,'0');
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'marker');
+      g.setAttribute('data-id', id);
+      g.setAttribute('transform', 'translate(' + x + ',' + y + ')');
+      g.style.cursor = 'pointer';
+
+      const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circ.setAttribute('r','10');
+      circ.setAttribute('fill','#ffd166');
+      circ.setAttribute('stroke','#ff9f1c');
+      circ.setAttribute('stroke-width','2');
+      g.appendChild(circ);
+
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x','18'); txt.setAttribute('y','6');
+      txt.setAttribute('font-size','12'); txt.setAttribute('fill','#10303a');
+      txt.textContent = '임시지점: ' + id;
+      g.appendChild(txt);
+
+      // 클릭하면 팝업으로 세부 제출 유도
+      g.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        openDetailPrompt(id, x, y);
+      });
+
+      userMarkers.appendChild(g);
+      // 스크롤/시선 안내
+      showToast('지도에 임시 지점이 생성되었습니다. 세부정보는 참여 신청에서 제출하세요.');
+    }
+
+    function openDetailPrompt(id,x,y){
+      const label = prompt('지점 라벨을 입력하세요 (예: 쓰레기무단투기, 관찰:왕잠자리)', '');
+      if(label){
+        // label 텍스트를 해당 마커 텍스트로 갱신
+        const g = userMarkers.querySelector('[data-id="'+id+'"]');
+        if(g){
+          const t = g.querySelector('text');
+          if(t) t.textContent = label;
+          showToast('지점 라벨이 저장되었습니다. 캠페인 참여에서 추가 정보를 제출하세요.');
+        }
+      }
+    }
+
+    /*******************************
+     * 간단한 토스트 알림
+     *******************************/
+    function showToast(msg, timeout=2300){
+      let el = document.getElementById('toastBox');
+      if(!el){
+        el = document.createElement('div');
+        el.id = 'toastBox';
+        Object.assign(el.style,{
+          position:'fixed', left:'50%', transform:'translateX(-50%)', bottom:'36px',
+          background:'rgba(16,48,58,0.9)', color:'#fff', padding:'10px 16px',
+          borderRadius:'10px', zIndex:9999, fontSize:'13px', boxShadow:'0 8px 30px rgba(16,48,58,0.12)'
+        });
+        document.body.appendChild(el);
+      }
+      el.textContent = msg;
+      el.style.opacity = '1';
+      clearTimeout(el._t);
+      el._t = setTimeout(()=>{ el.style.opacity='0'; }, timeout);
+    }
+
+    /*******************************
+     * Campaign 참여 신청 모달(간단)
+     *******************************/
+    function openSignup(campaignTitle){
+      const name = prompt(campaignTitle + '\\n\\n참여자 이름을 적어주세요', '');
+      if(!name) { showToast('참여 신청이 취소되었습니다.'); return; }
+      const school = prompt('학교 이름을 적어주세요', '');
+      if(school === null) { showToast('참여 신청이 취소되었습니다.'); return; }
+      showToast('참여 신청 완료 — 담당자가 ' + name + ' 님에게 연락드립니다.');
+      // 실제 서비스라면 여기서 서버로 전송
+      console.log('신청:', {campaign:campaignTitle, name, school, date: new Date().toISOString()});
+    }
+
+    /*******************************
+     * contact form: 임시저장 (로컬 스토리지)
+     *******************************/
+    function saveDraft(){
+      const form = document.getElementById('contactForm');
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        type: form.type.value,
+        message: form.message.value,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem('greenripple_contact_draft', JSON.stringify(data));
+      showToast('임시저장이 완료되었습니다.');
+    }
+
+    // on load, 불러오기
+    window.addEventListener('load', ()=>{
+      const d = localStorage.getItem('greenripple_contact_draft');
+      if(d){
+        try{
+          const obj = JSON.parse(d);
+          document.getElementById('name').value = obj.name || '';
+          document.getElementById('email').value = obj.email || '';
+          document.getElementById('type').value = obj.type || '';
+          document.getElementById('message').value = obj.message || '';
+          showToast('저장된 임시폼을 불러왔습니다.');
+        }catch(e){}
+      }
+    });
+
+    function submitContact(e){
+      e.preventDefault();
+      const form = e.target;
+      // simple validation
+      if(!form.name.value.trim() || !form.email.value.trim() || !form.message.value.trim()){
+        alert('이름, 이메일, 내용을 모두 입력해주세요.');
+        return;
+      }
+      // simulate send
+      showToast('문의가 전송되었습니다. 감사합니다!');
+      // clear draft
+      localStorage.removeItem('greenripple_contact_draft');
+      form.reset();
+      console.log('Contact form sent', {name:form.name.value, email:form.email.value, type:form.type.value, message:form.message.value});
+    }
+
+    /*******************************
+     * News 모달 (간단)
+     *******************************/
+    function showStory(id){
+      let title = '스토리';
+      let body = '자세한 내용은 내부 리포트를 확인하세요.';
+      if(id===1){
+        title='하천 정화 활동 보고서 (요약)';
+        body='이번 활동에서는 3시간 동안 24kg의 쓰레기를 수거했고, 플라스틱 비닐류가 가장 많았습니다. 향후 재활용 분리 교육과 CCTV 설치 제안을 준비 중입니다.';
+      } else if(id===2){
+        title='생물 관찰 주간 — 잠자리 조사';
+        body='왕잠자리가 주로 서식하는 지점은 수질이 비교적 양호한 중류 지역이었고, 주변 식생 보전이 핵심 요인으로 분석됩니다.';
+      } else if(id===3){
+        title='지역 쓰레기 지도 공개';
+        body='EcoMap 초안은 학생들이 3개월 동안 수집한 포인트로 구성되어 있으며, 핫스팟 10곳을 공개했습니다. 자세한 좌표와 사진은 리포트에서 확인할 수 있습니다.';
+      } else if(id===4){
+        title='플로깅 데이 후기';
+        body='학생들의 자발적 참여로 행사 종료 후 지역 커뮤니티에 긍정적인 반응이 있었습니다. 다음 행사에서는 어린이 대상 환경 교육을 추가할 계획입니다.';
+      }
+      alert(title + '\\n\\n' + body);
+    }
+
+    /*******************************
+     * 접근성: 키보드로 섹션 이동 (간단)
+     *******************************/
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'k' && (e.ctrlKey || e.metaKey)){
+        // Ctrl/Cmd+K : 상단으로
+        e.preventDefault();
+        document.querySelector('#home').scrollIntoView({behavior:'smooth'});
+      }
+    });
+  </script>
+</body>
+</html>
